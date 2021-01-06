@@ -11,7 +11,10 @@ $errors = array();
 
     $expense = mysqli_real_escape_string($con, $_POST['expense']);
 	 $dn = mysqli_real_escape_string($con, $_POST['dn']);
-   
+	  
+	  $detail = mysqli_real_escape_string($con, $_POST['detail']);
+  
+
     
     
     if (empty($expense)) { array_push($errors, "First Name is required"); }
@@ -26,11 +29,21 @@ $errors = array();
     if (count($errors) == 0) {
     
 
-         $query = "UPDATE flat SET expense1 = '20' WHERE doornumber = '1'";
+        $query = "UPDATE flat SET expense1 = '$expense' WHERE doornumber = '$dn'";
+			$query2 = "UPDATE flat SET details = '$detail' WHERE doornumber = '$dn'";
+	
          mysqli_query($con, $query);
-         header("location: home.php");
+		   mysqli_query($con, $query2);
+        
+		 
+		 
+		 
   }
 }
+
+	$neigquery = "SELECT * FROM flat ";
+  	$result = mysqli_query($con, $neigquery);
+
 
   ?>
 
@@ -72,9 +85,9 @@ $errors = array();
                                 <h5 class="mt-4">HOME PAGE</h5>
                             </a>
                            
-                           
-                                    <a class="nav-link" href="unpayed.php">Unpayed Dues</a>
-                                    
+                                   <a class="nav-link" href="changerent.php">Rent Update</a>
+                                    <a class="nav-link" href="uncollected.php">Unpayed Dues</a>
+                                     <a class="nav-link" href="apartmanproject.php">Apartment Projects</a>
                                     <a class="nav-link" href="expenses.php">Expenses</a>
                                     <a class="nav-link" href="dueshistory.php">Dues History</a>
                                     <a class="nav-link" href="neighbours.php">Residents List</a>
@@ -101,7 +114,7 @@ $errors = array();
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         
-                                                        <input class="form-control py-4" id="inputFirstName" name="espense" type="number" placeholder="Enter Expense" />
+                                                        <input class="form-control py-4" id="inputFirstName" name="expense" type="number" placeholder="Enter Expense" />
                                                     </div>
                                                 </div>
                                                 
@@ -111,7 +124,10 @@ $errors = array();
                                                 <input class="form-control py-4" id="inputPrice" name="dn" type="number" placeholder="Enter Doornumber" />
                                             </div>
                                             <div class="form-group">
-                                              
+                                                 <div class="form-group">
+                                               
+                                                <input class="form-control py-4" id="inputPhoneNumber" name="detail" type="text" placeholder="Enter Detail" />
+                                            </div>
                                                
                                                    
                                                 </div>
@@ -129,6 +145,41 @@ $errors = array();
 
 
 
+ <div id="layoutSidenav_content">
+                <main>
+                	 
+                	 <div class="container-fluid">
+                        <h1 class="mt-4">Espenses List</h1>
+                        
+                        
+                        <div class="card mb-4">
+                            
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                      
+                                            <tr>
+                                                <th>Doornumber</th>
+                                                <th>Price</th>
+                                                <th>Details</th>
+                                              
+                                            </tr>
+                                       
+                                     
+                                        <tbody>
+                                        	<?php
+                                        	while($row = mysqli_fetch_array($result)){   
+											echo "<tr><td>" . $row['doornumber'] . "</td><td>" . $row['expense1'] . "</td><td>" . $row['details'] . "</td></tr>";  
+											}
+											?>
+                                            
+                                          
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                     
                 </main>

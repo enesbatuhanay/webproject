@@ -71,9 +71,10 @@ include "../config.php";
                                 <h5 class="mt-4">HOME PAGE</h5>
                             </a>
                            
-                           
-                                    <a class="nav-link" href="unpayed.php">Unpayed Dues</a>
-                                    
+                                     
+                                    <a class="nav-link" href="changerent.php">Rent Update</a>
+									<a class="nav-link" href="uncollected.php">Unpayed Dues</a>
+								 <a class="nav-link" href="apartmanproject.php">Apartment Projects</a>
                                     <a class="nav-link" href="expenses.php">Expenses</a>
                                     <a class="nav-link" href="dueshistory.php">Dues History</a>
                                     <a class="nav-link" href="neighbours.php">Residents List</a>

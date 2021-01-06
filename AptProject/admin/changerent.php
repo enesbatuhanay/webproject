@@ -5,20 +5,52 @@
 include "checkadminlogin.php";
 include "../config.php";
 
-        
+$errors = array(); 
+
+    if (isset($_POST['but_submit'])) {
+
+    $expense = mysqli_real_escape_string($con, $_POST['expense']);
+	 $dn = mysqli_real_escape_string($con, $_POST['dn']);
+	  
+	  $detail = mysqli_real_escape_string($con, $_POST['detail']);
+  
+
+    
+    
+    if (empty($expense)) { array_push($errors, "First Name is required"); }
+   
+   
+
+    if($dn <= 0) {
+        array_push($errors, "Please enter valid price");
+    }
+
+
+    if (count($errors) == 0) {
     
 
-    $duesquery = "SELECT doornumber, userid, name, surname, price, paydate FROM actions ";
-    $result = mysqli_query($con, $duesquery);
+        $query = "UPDATE flat SET dues = '$expense' WHERE doornumber = '$dn'";
+			$query2 = "UPDATE flat SET fee = '$detail' WHERE doornumber = '$dn'";
+	
+         mysqli_query($con, $query);
+		   mysqli_query($con, $query2);
+        
+		 
+		 
+		 
+  }
+}
+
+	$neigquery = "SELECT * FROM flat ";
+  	$result = mysqli_query($con, $neigquery);
+
+
   ?>
 
 
 
-
-
-
 <head>
-       <meta charset="utf-8" />
+      <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
@@ -53,9 +85,9 @@ include "../config.php";
                                 <h5 class="mt-4">HOME PAGE</h5>
                             </a>
                            
-                                     <a class="nav-link" href="changerent.php">Rent Update</a>
+                                    <a class="nav-link" href="changerent.php">Rent Update</a>
                                     <a class="nav-link" href="uncollected.php">Unpayed Dues</a>
-                                 <a class="nav-link" href="apartmanproject.php">Apartment Projects</a>
+                                     <a class="nav-link" href="apartmanproject.php">Apartment Projects</a>
                                     <a class="nav-link" href="expenses.php">Expenses</a>
                                     <a class="nav-link" href="dueshistory.php">Dues History</a>
                                     <a class="nav-link" href="neighbours.php">Residents List</a>
@@ -70,51 +102,59 @@ include "../config.php";
 
             <div id="layoutSidenav_content">
                 <main>
-                  
-                        <h1 class="mt-4">Residents Due History</h1>
-                        
-                        
-                        <div class="card mb-4">
-                            
-                            <div class="card-body">
-                               
-                                    <table class="table table-bordered" id="" width="100%" cellspacing="0">
-                                        <thead>
-                                            <tr>
-                                                <th>Name</th>
-                                                <th>Surname</th>
-                                                <th>Door Number</th>
-                                                <th>Price</th>
-                                                <th>Pay Date</th>
-                                                
-                                            </tr>
-                                        </thead>
-                                       
-                                        <tbody>
-                                            <?php
-                                            while($row = mysqli_fetch_array($result)){   //Creates a loop to loop through results
-                                            echo "<tr><td>" . $row['name'] . "</td><td>" . $row['surname'] . "</td><td>" . $row['doornumber'] ."</td><td>" . $row['price'] . "</td><td>" . $row['paydate'] . "</td></tr>";  //$row['index'] the index here is a field name
-                                            }
-                                            ?>
-                                            
+                	 <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-7">
+                                <div class="card shadow-lg border-0 rounded-lg mt-5">
+                                    <div class="card-body">
+                                        <form method="post" action="">
+                                            <?php include('errors.php'); ?>
                                           
-                                        </tbody>
-                                    </table>
+                                            <div class="form-group">
+                                             
+                                                <input class="form-control py-4" id="inputPrice" name="dn" type="number" placeholder="Enter Door Number" />
+												
+												
+                                            </div>
+                                            <div class="form-group">
+											
+											 <input class="form-control py-4" id="inputPhoneNumber" name="expense" type="text" placeholder="Enter New Rent" />
+											
+											
+											 </div>
+                                                 <div class="form-group">
+                                               
+                                                <input class="form-control py-4" id="inputPhoneNumber" name="detail" type="text" placeholder="Enter New Due" />
+                                            </div>
+                                               
+                                                   
+                                               
+                                              
+
+                                            <input type="submit" class="btn btn-primary btn-block" value="Pay Now" name="but_submit" id="but_submit" href="login.php"/>
+                                    
+                                        </form>
+                                    </div>
+                                
                                 </div>
                             </div>
                         </div>
                     </div>
 
 
+
+ <div id="layoutSidenav_content">
+                <main>
+                	 
+                	
+
+                    
                 </main>
-               
+              
             </div>
         </div>
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="js/scripts.js"></script>
-        <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
-        <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
-        <script src="js/datatables-demo.js"></script>
     </body>
 </html>
