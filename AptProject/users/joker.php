@@ -24,8 +24,23 @@ include "../config.php";
          $duesquery2 = "SELECT SUM(price) FROM expanse WHERE adddate >= '2021/01/01' and adddate <= '2021/01/31'";
          $result3 = mysqli_query($con, $duesquery2);
          $row3 = mysqli_fetch_array($result3);
+		 
+		 $monthquery4 = "SELECT projedetails FROM flat WHERE doornumber='1'";
+         $result111 = mysqli_query($con, $monthquery4);
+         $det = mysqli_fetch_array($result111);
+		 
+		 $det['projedetails'];
+		 
+		 $monthquery5 = "SELECT projecost FROM flat WHERE doornumber='1'";
+         $result1111 = mysqli_query($con, $monthquery5);
+         $cost = mysqli_fetch_array($result1111);
+		 
+		 
+		 $cost['projecost'];
 
          $subs = $row1['dues'] - $row2[0];
+		 
+		 $final= $row[0]-$cost['projecost'];
   ?>
 
 
@@ -67,43 +82,69 @@ include "../config.php";
                             </a>
                            
                              <a class="nav-link" href="yourdebt.php">Your Debt</a>
+							  <a class="nav-link" href="ekstralar.php">Expense Detail</a>
                                    <a class="nav-link" href="joker.php">Apartment's Money</a>
                                     <a class="nav-link" href="aidat.php">Dues</a>
                                     <a class="nav-link" href="dueshistory.php">Dues History</a>
                                     <a class="nav-link" href="neighbours.php">Residents List</a>
-                                    <a class="nav-link" href="flathistory.php">History</a>
+                                  
                             
                         </div>
                     </div>
                   
                 </nav>
             </div>
-
-            <div id="layoutSidenav_content">
+<div id="layoutSidenav_content">
                 <main>
-                	
-                	 
-                        
-                         <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card bg-light mb-4  py-3">
+                	<div class="row">
+                	  <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-primary shadow h-100 py-2">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
-                                             <h5 class="mt-4"></h5>  <div class="text-xs font-weight-bold text-success text-uppercase mb-3">
-                                                All Money Collected From Residents</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $row[0] . " TL "; ?></div>
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total Apartman Income
+                                                </div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $row[0] . " USD "; ?></div>
                                         </div>
                                         <div class="col-auto">
-                                            <i class="fas fa-donate fa-5x text-gray-300"></i>
+                                          
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-warning shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                </div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $det['projedetails'] . " Costs ". $cost['projecost']. " USD "; ?></div>
+                                        </div>
+                                        <div class="col-auto">
+                                           
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                          <div class="col-xl-3 col-md-6 mb-4">
-                            
+                            <div class="card border-left-success shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                               Remaining Money </div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $final. " USD "; ?></div>
+                                        </div>
+                                        <div class="col-auto">
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        
                   
                 </main>
                 <footer class="py-4 bg-light mt-auto">

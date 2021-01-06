@@ -77,11 +77,12 @@ $errors = array();
                             </a>
                            
                              <a class="nav-link" href="yourdebt.php">Your Debt</a>
+							  <a class="nav-link" href="ekstralar.php">Expense Detail</a>
                             <a class="nav-link" href="joker.php">Apartment's Money</a>
                                     <a class="nav-link" href="aidat.php">Dues</a>
                                     <a class="nav-link" href="dueshistory.php">Dues History</a>
                                     <a class="nav-link" href="neighbours.php">Residents List</a>
-                                    <a class="nav-link" href="flathistory.php">History</a>
+                                   
                             
                         </div>
                     </div>

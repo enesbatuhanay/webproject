@@ -25,11 +25,15 @@ include "../config.php";
          $result3 = mysqli_query($con, $duesquery2);
          $row3 = mysqli_fetch_array($result3);
 		 
-		 $monthquery2 = "SELECT dues FROM flat WHERE doornumber='$doornumber'";
-         $result3 = mysqli_query($con, $monthquery2);
-      
-	  
-         $subs = $row1['dues'] - $row2[0];
+		 $aidatfee = "SELECT fee FROM flat WHERE doornumber='$doornumber'";
+         $resultfee = mysqli_query($con, $aidatfee);
+         $fee1 = mysqli_fetch_array($resultfee);
+		 
+
+         $borc = $row1['dues'] - $row2[0];
+		 $subs1 =$fee1['fee'];
+		 $name1=$_SESSION['name'];
+		 
   ?>
 
 
@@ -71,40 +75,60 @@ include "../config.php";
                             </a>
                            
                              <a class="nav-link" href="yourdebt.php">Your Debt</a>
+							  <a class="nav-link" href="ekstralar.php">Expense Detail</a>
                                    <a class="nav-link" href="joker.php">Apartment's Money</a>
                                     <a class="nav-link" href="aidat.php">Dues</a>
                                     <a class="nav-link" href="dueshistory.php">Dues History</a>
                                     <a class="nav-link" href="neighbours.php">Residents List</a>
-                                    <a class="nav-link" href="flathistory.php">History</a>
+                                 
                             
                         </div>
                     </div>
                   
                 </nav>
             </div>
-
+ 
             <div id="layoutSidenav_content">
+		
                 <main>
+				
                 	<div class="row">
-                	 
-                      
+                	  
+                    
                          
-                         <div class="col-xl-3 col-md-6 mb-4">
-                            
-                        </div>
+                      
                         
                     <div class="container-fluid">
-                        <h4 class="mt-4">Welcome User!</h4>
+					  	<?php echo '<h2>Welcome Tenant!</h2> '  ; ?>
+                      
                         <div class="card mb-4">
+						
                             
                         </div>
+						
 						  <div class="col-xl-3 col-md-6 mb-4">
+						  
+						  
+						   <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-secondary text-uppercase mb-1">
+                                              Your <br> This Months Due is</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $subs1 . " USD "; ?></div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fa fa-exclamation-triangle fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="card border-left-primary shadow h-100 py-2">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                               Attention! <br> This Months Due is</div>
+                                                <br> This Months Rent is</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $row1['dues'] . " USD "; ?></div>
                                         </div>
                                         <div class="col-auto">
@@ -115,12 +139,16 @@ include "../config.php";
                             </div>
                         </div>
 						
+						 
+						
+						
 						                                                  <?php if ($subs = $row1['dues'] - $row2[0]<=0) {
-                                                                echo "You dont have any debt";
+                                                                echo "<h3>You dont have any debt for this month</h3>";
 																}
 																
 																else {
-                                                                echo "You have a debt";
+                                                                echo "<h3>You have unpaid debts please check your debts!</h3>";
+
 																
 																
 																

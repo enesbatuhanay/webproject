@@ -54,11 +54,12 @@ include "../config.php";
                             </a>
                            
                              <a class="nav-link" href="yourdebt.php">Your Debt</a>
+							  <a class="nav-link" href="ekstralar.php">Expense Detail</a>
                                    <a class="nav-link" href="joker.php">Apartment's Money</a>
                                     <a class="nav-link" href="aidat.php">Dues</a>
                                     <a class="nav-link" href="dueshistory.php">Dues History</a>
                                     <a class="nav-link" href="neighbours.php">Residents List</a>
-                                    <a class="nav-link" href="flathistory.php">History</a>
+                                   
                             
                         </div>
                     </div>
@@ -70,7 +71,7 @@ include "../config.php";
                 <main>
                 	 
                 	 <div class="container-fluid">
-                        <h1 class="mt-4">Residents List In Your </h1>
+                        <h1 class="mt-4">Residents List In Your Block </h1>
                         
                         
                         <div class="card mb-4">

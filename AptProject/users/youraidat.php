@@ -24,22 +24,8 @@ include "../config.php";
          $duesquery2 = "SELECT SUM(price) FROM expanse WHERE adddate >= '2021/01/01' and adddate <= '2021/01/31'";
          $result3 = mysqli_query($con, $duesquery2);
          $row3 = mysqli_fetch_array($result3);
-		 
-		 $aidatfee = "SELECT fee FROM flat WHERE doornumber='$doornumber'";
-         $resultfee = mysqli_query($con, $aidatfee);
-         $fee1 = mysqli_fetch_array($resultfee);
-		 
-		  $expenseburda = "SELECT expense1 FROM flat WHERE doornumber='$doornumber'";
-         $expense1 = mysqli_query($con, $expenseburda);
-         $expense11 = mysqli_fetch_array($expense1);
-		 
-		 
-		 
 
-         $borc = $row1['dues'] - $row2[0];
-		 $subs1 =$fee1['fee'];
-		 $borc1 = $borc+$fee1['fee'];
-		 $tborc=$borc1+$expense11['expense1'];
+         $subs = $row1['dues'] - $row2[0];
 		 
 		 
   ?>
@@ -88,7 +74,7 @@ include "../config.php";
                                     <a class="nav-link" href="aidat.php">Dues</a>
                                     <a class="nav-link" href="dueshistory.php">Dues History</a>
                                     <a class="nav-link" href="neighbours.php">Residents List</a>
-                                   
+                                    
                             
                         </div>
                     </div>
@@ -106,8 +92,8 @@ include "../config.php";
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-success  text-uppercase mb-3">
-                                                Your total debt for this month ! </div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $tborc . " USD "; ?></div>
+                                                Your debt for this month ! </div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $subs . " USD "; ?></div>
 											
 											
 											
@@ -128,11 +114,8 @@ include "../config.php";
                             </div>
                         </div>
 						
-						
 			                
-							 
-							 
-							 <?php if ($tborc<0) {
+							 <?php if ($subs<=0) {
                                                                echo "You payed more than you have to please contect with admin";
 																}
 																
@@ -143,20 +126,24 @@ include "../config.php";
 																
                                                                  }
                                                              ?>
-							 
-							 
 							
 							
 							
+							
+							
+										                                  
+										
+										
+										
+										
+										
+										
 										
 										
 										
 										
                         
                          <div class="col-xl-3 col-md-6 mb-4">
-						 
-						  
-						 
                             
                         </div>
                         
