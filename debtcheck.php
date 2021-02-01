@@ -30,10 +30,6 @@ include "../config.php";
 
          $exquery = "SELECT * FROM announcement WHERE isactive = '1'";
          $result21 = mysqli_query($con, $exquery);
-		 
-		  $duesquery22 = "SELECT SUM(amount) FROM dues WHERE  isactivedue = '1' AND flatid = '$doornumber' ";
-         $result22 = mysqli_query($con, $duesquery22);
-         $row22 = mysqli_fetch_array($result22);
   ?>
 
 
@@ -93,17 +89,17 @@ include "../config.php";
                 <main>
                 	<div class="row">
                 	 
-                       
+                      
                         
-                       
-						 <div class="col-xl-3 col-md-6 mb-4">
+                         
+                         <div class="col-xl-3 col-md-6 mb-4">
                             <div class="card bg-light mb-4  py-2">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-success  text-uppercase mb-3">
-                                                Your rent for month ! </div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $row3[0] . " TL "; ?></div>
+                                             Your debt ! </div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $row22[0] . " TL "; ?></div>
 											
 											
 											
@@ -117,54 +113,42 @@ include "../config.php";
                                             <i class="fas fa-money-bill-wave fa-5x text-gray-300 "  ></i>
 											
 											
-										
+											<a class=" text-xs font-weight-bold  text-danger  nav-link" href="aidat.php">Click to Pay!</a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
 						
-                        
-                    <div class="container-fluid">
-                        <h1 class="mt-4">Attention!</h1>
-                        
-                        
-                        <div class="card mb-4">
-                        
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                        
-                                            <tr>
-                                                <th>Date</th>
-                                                <th>Announcement</th>       
-                                            </tr>
-                                     
-                                       
-                                        <tbody>
-                                            <?php
-                                            while($row21 = mysqli_fetch_array($result21)){   
-                                            echo "<tr><td>" . $row21['date'] . "</td><td>" . $row21['annodetail']  . "</td></tr>";  
-                                            }
-                                            ?>
-                                        </tbody>
-                                    </table>
+						 <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card bg-light mb-4  py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-success  text-uppercase mb-3">
+                                                Apartment Cost With Expanses! </div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $row4[0] . " TL "; ?></div>
+											
+											
+											
+											
+											
+											
+											
+											
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-money-bill-wave fa-5x text-gray-300 "  ></i>
+											
+											
+											<a class=" text-xs font-weight-bold  text-danger  nav-link" href="aidat.php">Click to Pay!</a>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-						<?php if ($row22[0]<=0) {
-                                                                echo "<h4>You dont have any debt for this month!</h4>";
-																}
-																
-																else {
-                                                                echo "<h4>You have unpaid debts please check your debts!</h4>";
-
-																
-																
-																
-                                                                 }
-                                                             ?>
-                    </div>
+						
+                   
                 </main>
                
             </div>

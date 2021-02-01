@@ -2,43 +2,21 @@
 <html lang="en">
 
  <?php 
-require "checkuserlogin.php";
+include "checkuserlogin.php";
 include "../config.php";
 
-        $errors = array();
+     $id = $_SESSION['id'];
+    $flatid = $_SESSION['doornumber'];
 
-        $userid = $_SESSION['id'];
-         $doornumber = $_SESSION['doornumber'];
-
-        $monthquery2 = "SELECT amount FROM dues WHERE flatid='$doornumber' AND MONTH(ddate) = MONTH(CURRENT_DATE()) AND YEAR(ddate) = YEAR(CURRENT_DATE())";
-         $result3 = mysqli_query($con, $monthquery2);
-         $row3 = mysqli_fetch_array($result3);
+    $duesquery = "SELECT * FROM transaction INNER JOIN dues ON transaction.tduesid = dues.duesid WHERE userid='$id'";
+    $result = mysqli_query($con, $duesquery);
 
 
-         $duesquery22 = "SELECT SUM(amount) FROM dues WHERE  isactivedue = '1' AND flatid = '$doornumber' ";
-         $result22 = mysqli_query($con, $duesquery22);
-         $row22 = mysqli_fetch_array($result22);
-
-         $duesquery = "SELECT SUM(price) FROM transaction WHERE MONTH(paydate) = MONTH(CURRENT_DATE()) AND YEAR(paydate) = YEAR(CURRENT_DATE())";
-         $result = mysqli_query($con, $duesquery);
-         $row = mysqli_fetch_array($result);
-         
-
-         $duesquery3 = "SELECT SUM(price) FROM expanse WHERE MONTH(date) = MONTH(CURRENT_DATE()) AND YEAR(date) = YEAR(CURRENT_DATE())";
-         $result4 = mysqli_query($con, $duesquery3);
-         $row4 = mysqli_fetch_array($result4);
-
-         $exquery = "SELECT * FROM announcement WHERE isactive = '1'";
-         $result21 = mysqli_query($con, $exquery);
-		 
-		  $duesquery22 = "SELECT SUM(amount) FROM dues WHERE  isactivedue = '1' AND flatid = '$doornumber' ";
-         $result22 = mysqli_query($con, $duesquery22);
-         $row22 = mysqli_fetch_array($result22);
   ?>
 
 
 
-      <head>
+   <head>
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -80,7 +58,7 @@ include "../config.php";
 									 <a class="nav-link" href="expenselist.php">Expense List</a>
 									  <a class="nav-link" href="apartproject.php">Apartment Project</a>
 									  <a class="nav-link" href="neighbours.php">Neighnours</a>
-									  
+									 
                                  
                             
                         </div>
@@ -88,82 +66,39 @@ include "../config.php";
                   
                 </nav>
             </div>
-
             <div id="layoutSidenav_content">
                 <main>
-                	<div class="row">
-                	 
-                       
-                        
-                       
-						 <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card bg-light mb-4  py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-success  text-uppercase mb-3">
-                                                Your rent for month ! </div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $row3[0] . " TL "; ?></div>
-											
-											
-											
-											
-											
-											
-											
-											
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-money-bill-wave fa-5x text-gray-300 "  ></i>
-											
-											
-										
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-						
-                        
-                    <div class="container-fluid">
-                        <h1 class="mt-4">Attention!</h1>
-                        
-                        
+                  <div class="container-fluid">
+                        <h1 class="mt-4">Payment History</h1>
                         <div class="card mb-4">
-                        
+                           
                             <div class="card-body">
                                 <div class="table-responsive">
                                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                        
-                                            <tr>
-                                                <th>Date</th>
-                                                <th>Announcement</th>       
-                                            </tr>
-                                     
                                        
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Surname</th>
+                                                <th>Door Number</th>
+                                                <th>Price</th>
+                                                <th>Pay Date</th>
+                                                <th>Dues Date</th>
+                                            </tr>
+                                       
+                                      
                                         <tbody>
                                             <?php
-                                            while($row21 = mysqli_fetch_array($result21)){   
-                                            echo "<tr><td>" . $row21['date'] . "</td><td>" . $row21['annodetail']  . "</td></tr>";  
+                                            while($row = mysqli_fetch_array($result)){   //Creates a loop to loop through results
+                                            echo "<tr><td>" . $row['name'] . "</td><td>" . $row['surname'] . "</td><td>" . $row['doornumber'] ."</td><td>" . $row['price'] . "</td><td>" . $row['paydate'] . "</td><td>" . $row['ddate']. "</td></tr>";  //$row['index'] the index here is a field name
                                             }
                                             ?>
+                                            
+                                          
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
                         </div>
-						<?php if ($row22[0]<=0) {
-                                                                echo "<h4>You dont have any debt for this month!</h4>";
-																}
-																
-																else {
-                                                                echo "<h4>You have unpaid debts please check your debts!</h4>";
-
-																
-																
-																
-                                                                 }
-                                                             ?>
                     </div>
                 </main>
                
@@ -172,5 +107,8 @@ include "../config.php";
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="js/scripts.js"></script>
+        <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
+        <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
+        <script src="js/datatables-demo.js"></script>
     </body>
 </html>

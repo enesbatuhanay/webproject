@@ -28,12 +28,8 @@ include "../config.php";
          $result4 = mysqli_query($con, $duesquery3);
          $row4 = mysqli_fetch_array($result4);
 
-         $exquery = "SELECT * FROM announcement WHERE isactive = '1'";
+         $exquery = "SELECT * FROM announcement WHERE isactive = '0'";
          $result21 = mysqli_query($con, $exquery);
-		 
-		  $duesquery22 = "SELECT SUM(amount) FROM dues WHERE  isactivedue = '1' AND flatid = '$doornumber' ";
-         $result22 = mysqli_query($con, $duesquery22);
-         $row22 = mysqli_fetch_array($result22);
   ?>
 
 
@@ -96,14 +92,15 @@ include "../config.php";
                        
                         
                        
+						
 						 <div class="col-xl-3 col-md-6 mb-4">
                             <div class="card bg-light mb-4  py-2">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-success  text-uppercase mb-3">
-                                                Your rent for month ! </div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $row3[0] . " TL "; ?></div>
+                                                Total Apartment Income </div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $row[0] . " TL "; ?></div>
 											
 											
 											
@@ -123,10 +120,9 @@ include "../config.php";
                                 </div>
                             </div>
                         </div>
-						
                         
                     <div class="container-fluid">
-                        <h1 class="mt-4">Attention!</h1>
+                        <h1 class="mt-4">Aparment Project</h1>
                         
                         
                         <div class="card mb-4">
@@ -152,18 +148,6 @@ include "../config.php";
                                 </div>
                             </div>
                         </div>
-						<?php if ($row22[0]<=0) {
-                                                                echo "<h4>You dont have any debt for this month!</h4>";
-																}
-																
-																else {
-                                                                echo "<h4>You have unpaid debts please check your debts!</h4>";
-
-																
-																
-																
-                                                                 }
-                                                             ?>
                     </div>
                 </main>
                
