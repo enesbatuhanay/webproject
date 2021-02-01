@@ -1,46 +1,19 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html lang="en">
+
+
 
  <?php 
 include "checkadminlogin.php";
 include "../config.php";
 
-        $errors = array();
+    $id = $_SESSION['id'];
+    $flatid = $_SESSION['doornumber'];
 
-        $duesquery = "SELECT SUM(price) FROM transaction WHERE MONTH(paydate) = MONTH(CURRENT_DATE()) AND YEAR(paydate) = YEAR(CURRENT_DATE())";
-         $result = mysqli_query($con, $duesquery);
-         $row = mysqli_fetch_array($result);
-
-         $duesquery22 = "SELECT SUM(amount) FROM dues WHERE MONTH(ddate) = MONTH(CURRENT_DATE()) AND YEAR(ddate) = YEAR(CURRENT_DATE()) AND isactivedue = '0'";
-         $result22 = mysqli_query($con, $duesquery22);
-         $row22 = mysqli_fetch_array($result22);
-         
-         $monthquery = "SELECT SUM(amount) FROM dues WHERE MONTH(ddate) = MONTH(CURRENT_DATE()) AND YEAR(ddate) = YEAR(CURRENT_DATE()) ";
-         $result1 = mysqli_query($con, $monthquery);
-         $row1 = mysqli_fetch_array($result1);
-         
-    
-
-         $subs = $row1[0] - $row22[0];
-         
-         $userid = $_SESSION['id'];
-         $doornumber = $_SESSION['doornumber'];
-         
-         $monthquery2 = "SELECT amount FROM dues WHERE flatid='$doornumber' AND MONTH(ddate) = MONTH(CURRENT_DATE()) AND YEAR(ddate) = YEAR(CURRENT_DATE())";
-         $result3 = mysqli_query($con, $monthquery2);
-         $row3 = mysqli_fetch_array($result3);
-         
-         $duesquery3 = "SELECT SUM(price) FROM expanse WHERE MONTH(date) = MONTH(CURRENT_DATE()) AND YEAR(date) = YEAR(CURRENT_DATE())";
-         $result4 = mysqli_query($con, $duesquery3);
-         $row4 = mysqli_fetch_array($result4);
+    $duesquery = "SELECT * FROM transaction INNER JOIN dues ON transaction.tduesid = dues.duesid WHERE doornumber='$flatid'";
+    $result = mysqli_query($con, $duesquery);
 
 
-         $exquery = "SELECT * FROM announcement WHERE isactive = '1'";
-        $result21 = mysqli_query($con, $exquery);
-
-
-        
-     
 
   ?>
 
@@ -112,81 +85,38 @@ include "../config.php";
 
             <div id="layoutSidenav_content">
                 <main>
-                    <div class="row">
-                     
-                                 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-						
-                         
-                       
-                        
-                    <div class="container-fluid">
-                        <h1 class="mt-4">Hello Admin!</h1>
-                        <div class="card mb-4">
-                            
-                        </div>
-						 <div class="container-fluid">
-                        <h1 class="mt-4">Attention!</h1>
-                        
-                        
-                        <div class="card mb-4">
-                        
-                            
+                   
+                        <h1 class="mt-4">Payment History</h1>
+                      
+                            <div class="card-body">
                               
                                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                      
-                                            
-                                                <th>Date</th>
-                                                <th>Announcement</th>       
-
                                        
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Surname</th>
+                                                <th>Door Number</th>
+                                                <th>Price</th>
+                                                <th>Pay Date</th>
+                                                <th>Dues Date</th>
+                                            </tr>
+                                       
+                                     
                                         <tbody>
                                             <?php
-                                            while($row21 = mysqli_fetch_array($result21)){   
-                                            echo "<tr><td>" . $row21['date'] . "</td><td>" . $row21['annodetail']  . "</td></tr>";  
+                                            while($row = mysqli_fetch_array($result)){   //Creates a loop to loop through results
+                                            echo "<tr><td>" . $row['name'] . "</td><td>" . $row['surname'] . "</td><td>" . $row['doornumber'] ."</td><td>" . $row['price'] . "</td><td>" . $row['paydate'] . "</td><td>" . $row['ddate']. "</td></tr>";  //$row['index'] the index here is a field name
                                             }
                                             ?>
+                                            
+                                          
                                         </tbody>
                                     </table>
-                               
-                          
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    </div>
-					      
-                    <div class="container-fluid">
-                        <h1 class="mt-5"><?php $row33 ?></h1>
-                        <div class="card mb-5">
-                            
-                        </div>
-                    </div>
+
                 </main>
              
             </div>
@@ -194,5 +124,8 @@ include "../config.php";
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="js/scripts.js"></script>
+        <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
+        <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
+        <script src="js/datatables-demo.js"></script>
     </body>
 </html>

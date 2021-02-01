@@ -6,42 +6,36 @@ include "checkadminlogin.php";
 include "../config.php";
 
         $errors = array();
+        $userid = $_SESSION['id'];
 
-        $duesquery = "SELECT SUM(price) FROM transaction WHERE MONTH(paydate) = MONTH(CURRENT_DATE()) AND YEAR(paydate) = YEAR(CURRENT_DATE())";
-         $result = mysqli_query($con, $duesquery);
-         $row = mysqli_fetch_array($result);
-
-         $duesquery22 = "SELECT SUM(amount) FROM dues WHERE MONTH(ddate) = MONTH(CURRENT_DATE()) AND YEAR(ddate) = YEAR(CURRENT_DATE()) AND isactivedue = '0'";
-         $result22 = mysqli_query($con, $duesquery22);
-         $row22 = mysqli_fetch_array($result22);
+        if (isset($_POST['but_submit'])) {
+        $amount = mysqli_real_escape_string($con, $_POST['amount']);
+         $details = mysqli_real_escape_string($con, $_POST['details']);
+         $date = mysqli_real_escape_string($con, $_POST['date']);
          
-         $monthquery = "SELECT SUM(amount) FROM dues WHERE MONTH(ddate) = MONTH(CURRENT_DATE()) AND YEAR(ddate) = YEAR(CURRENT_DATE()) ";
-         $result1 = mysqli_query($con, $monthquery);
-         $row1 = mysqli_fetch_array($result1);
-         
-    
+             
+            if (empty($amount)) { array_push($errors, "Amount is required"); }
+            if (empty($date)) { array_push($errors, "Date is required");}
+           
+   
 
-         $subs = $row1[0] - $row22[0];
-         
-         $userid = $_SESSION['id'];
-         $doornumber = $_SESSION['doornumber'];
-         
-         $monthquery2 = "SELECT amount FROM dues WHERE flatid='$doornumber' AND MONTH(ddate) = MONTH(CURRENT_DATE()) AND YEAR(ddate) = YEAR(CURRENT_DATE())";
-         $result3 = mysqli_query($con, $monthquery2);
-         $row3 = mysqli_fetch_array($result3);
-         
-         $duesquery3 = "SELECT SUM(price) FROM expanse WHERE MONTH(date) = MONTH(CURRENT_DATE()) AND YEAR(date) = YEAR(CURRENT_DATE())";
-         $result4 = mysqli_query($con, $duesquery3);
-         $row4 = mysqli_fetch_array($result4);
+    if($amount <= 0) {
+        array_push($errors, "Please enter valid amount");
+    }
 
+            if (count($errors) == 0) {
+                $query1 = "SELECT flatid FROM flat WHERE isfull = '1'";
+                    $result = mysqli_query($con, $query1);
+                    while($row = mysqli_fetch_array($result)){
+                        $flatid = $row['flatid'];
+                        
+                    $query2 = "INSERT INTO dues (flatid, amount, details, isactivedue, ddate, adminid) VALUES('$flatid', '$amount', '$details', '1', '$date', '$userid')";
+                    mysqli_query($con, $query2);
+            }
 
-         $exquery = "SELECT * FROM announcement WHERE isactive = '1'";
-        $result21 = mysqli_query($con, $exquery);
-
-
+        }
+        }
         
-     
-
   ?>
 
 
@@ -84,7 +78,7 @@ include "../config.php";
                                 <h5 class="mt-4">HOME PAGE</h5>
                             </a>
                            
-                                  
+                                 
                                   
                                    
 								
@@ -112,83 +106,41 @@ include "../config.php";
 
             <div id="layoutSidenav_content">
                 <main>
-                    <div class="row">
-                     
-                                 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-						
-                         
-                       
-                        
-                    <div class="container-fluid">
-                        <h1 class="mt-4">Hello Admin!</h1>
-                        <div class="card mb-4">
-                            
-                        </div>
-						 <div class="container-fluid">
-                        <h1 class="mt-4">Attention!</h1>
-                        
-                        
-                        <div class="card mb-4">
-                        
-                            
-                              
-                                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                      
-                                            
-                                                <th>Date</th>
-                                                <th>Announcement</th>       
-
-                                       
-                                        <tbody>
-                                            <?php
-                                            while($row21 = mysqli_fetch_array($result21)){   
-                                            echo "<tr><td>" . $row21['date'] . "</td><td>" . $row21['annodetail']  . "</td></tr>";  
-                                            }
-                                            ?>
-                                        </tbody>
-                                    </table>
-                               
-                          
-                        </div>
-                    </div>
-                    </div>
-					      
-                    <div class="container-fluid">
-                        <h1 class="mt-5"><?php $row33 ?></h1>
-                        <div class="card mb-5">
-                            
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-7">
+                                <div class="card shadow-lg border-0 rounded-lg mt-5">
+                                    <div class="card-header"><h3 class="text-center font-weight-light my-4">Add Monthly Dues</h3></div>
+                                    <div class="card-body">
+                                        <form method="post" action="">
+                                        <form method="post" action="">
+                                            <?php include('errors.php'); ?>
+                                            <div class="form-row">
+                                                
+                                                    <div class="form-group">
+                                                        <label class="small mb-1" for="inputFirstName">Amount</label>
+                                                        <input class="form-control py-4" id="inputFirstName" name="amount" type="number" placeholder="Enter Amount" />
+                                                    </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="small mb-1" for="inputUsername">Details</label>
+                                                <input class="form-control py-4" id="inputPrice" name="details" type="text" placeholder="Enter Details"/>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="small mb-1" for="inputUsername">Date</label>
+                                                <input class="form-control py-4" id="inputPrice" name="date" type="date" placeholder="Enter Date" />
+                                            </div>
+                                             <input type="submit" class="btn btn-primary btn-block" value="Add Dues" name="but_submit" id="but_submit"/>
+                                    
+                                        </form>
+                                    </div>
+                                
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </main>
-             
+               
             </div>
         </div>
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" crossorigin="anonymous"></script>

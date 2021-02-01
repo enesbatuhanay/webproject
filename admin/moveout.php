@@ -5,43 +5,23 @@
 include "checkadminlogin.php";
 include "../config.php";
 
-        $errors = array();
-
-        $duesquery = "SELECT SUM(price) FROM transaction WHERE MONTH(paydate) = MONTH(CURRENT_DATE()) AND YEAR(paydate) = YEAR(CURRENT_DATE())";
-         $result = mysqli_query($con, $duesquery);
-         $row = mysqli_fetch_array($result);
-
-         $duesquery22 = "SELECT SUM(amount) FROM dues WHERE MONTH(ddate) = MONTH(CURRENT_DATE()) AND YEAR(ddate) = YEAR(CURRENT_DATE()) AND isactivedue = '0'";
-         $result22 = mysqli_query($con, $duesquery22);
-         $row22 = mysqli_fetch_array($result22);
+        $movequery = "SELECT userid, doornumber FROM users WHERE isactive='1'  ORDER BY doornumber ASC ";
+         $result = mysqli_query($con, $movequery);
          
-         $monthquery = "SELECT SUM(amount) FROM dues WHERE MONTH(ddate) = MONTH(CURRENT_DATE()) AND YEAR(ddate) = YEAR(CURRENT_DATE()) ";
-         $result1 = mysqli_query($con, $monthquery);
-         $row1 = mysqli_fetch_array($result1);
          
-    
 
-         $subs = $row1[0] - $row22[0];
+         if (isset($_POST['but_submit'])) {
+
+            $selectOption = $_POST['moveout'];
+            
+            $updatequery = "UPDATE users SET quit_date = CURRENT_TIMESTAMP, isactive = '0' WHERE userid='$selectOption'";
+            mysqli_query($con, $updatequery);
+            $updatequery1 = "UPDATE flat SET isfull = '0', auserid = NULL WHERE auserid='$selectOption'";
+            mysqli_query($con, $updatequery1);
+            header('location: home.php');
+
+         }
          
-         $userid = $_SESSION['id'];
-         $doornumber = $_SESSION['doornumber'];
-         
-         $monthquery2 = "SELECT amount FROM dues WHERE flatid='$doornumber' AND MONTH(ddate) = MONTH(CURRENT_DATE()) AND YEAR(ddate) = YEAR(CURRENT_DATE())";
-         $result3 = mysqli_query($con, $monthquery2);
-         $row3 = mysqli_fetch_array($result3);
-         
-         $duesquery3 = "SELECT SUM(price) FROM expanse WHERE MONTH(date) = MONTH(CURRENT_DATE()) AND YEAR(date) = YEAR(CURRENT_DATE())";
-         $result4 = mysqli_query($con, $duesquery3);
-         $row4 = mysqli_fetch_array($result4);
-
-
-         $exquery = "SELECT * FROM announcement WHERE isactive = '1'";
-        $result21 = mysqli_query($con, $exquery);
-
-
-        
-     
-
   ?>
 
 
@@ -86,7 +66,7 @@ include "../config.php";
                            
                                   
                                   
-                                   
+                                    
 								
 									 <a class="nav-link" href="adddues.php">Add Monthly Dues</a>
                                     <a class="nav-link" href="detduesdoornumber.php">Determine Dues(Door Number)</a>
@@ -112,83 +92,33 @@ include "../config.php";
 
             <div id="layoutSidenav_content">
                 <main>
-                    <div class="row">
-                     
-                                 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-						
-                         
-                       
-                        
-                    <div class="container-fluid">
-                        <h1 class="mt-4">Hello Admin!</h1>
-                        <div class="card mb-4">
-                            
-                        </div>
-						 <div class="container-fluid">
-                        <h1 class="mt-4">Attention!</h1>
-                        
-                        
-                        <div class="card mb-4">
-                        
-                            
-                              
-                                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                      
-                                            
-                                                <th>Date</th>
-                                                <th>Announcement</th>       
-
-                                       
-                                        <tbody>
-                                            <?php
-                                            while($row21 = mysqli_fetch_array($result21)){   
-                                            echo "<tr><td>" . $row21['date'] . "</td><td>" . $row21['annodetail']  . "</td></tr>";  
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-7">
+                                <div class="card shadow-lg border-0 rounded-lg mt-5">
+                                    <div class="card-header"><h3 class="text-center font-weight-light my-4">Move Out Resident</h3></div>
+                                    <div class="card-body">
+                                        <form method="post" action="">
+                                         <div class="form-group">
+                                     <label for="c-form-profession">
+                                         <span class="label-text">Select a Door number that the person who Move out</span> 
+                                         <span class="contact-error"></span>
+                                     </label>
+                                 <select name="moveout" class="c-form-profession form-control" id="c-form-profession">
+                                    <?php
+                                            while($row = mysqli_fetch_array($result)){   
+                                                    unset($id, $name);
+                                                    $id = $row['userid'];
+                                                     $doornumber = $row['doornumber']; 
+                                                      echo '<option value="'.$id.'">'.$doornumber.'</option>';
                                             }
                                             ?>
-                                        </tbody>
-                                    </table>
-                               
-                          
-                        </div>
-                    </div>
-                    </div>
-					      
-                    <div class="container-fluid">
-                        <h1 class="mt-5"><?php $row33 ?></h1>
-                        <div class="card mb-5">
-                            
-                        </div>
-                    </div>
+                                 </select>
+                            </div>
+                         <input type="submit" class="btn btn-primary btn-block" value="Confirm" name="but_submit" id="but_submit" href="home.php"/>                            
+                    </form>
                 </main>
-             
+               
             </div>
         </div>
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" crossorigin="anonymous"></script>

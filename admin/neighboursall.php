@@ -1,51 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 
+
  <?php 
 include "checkadminlogin.php";
 include "../config.php";
 
-        $errors = array();
+	
 
-        $duesquery = "SELECT SUM(price) FROM transaction WHERE MONTH(paydate) = MONTH(CURRENT_DATE()) AND YEAR(paydate) = YEAR(CURRENT_DATE())";
-         $result = mysqli_query($con, $duesquery);
-         $row = mysqli_fetch_array($result);
-
-         $duesquery22 = "SELECT SUM(amount) FROM dues WHERE MONTH(ddate) = MONTH(CURRENT_DATE()) AND YEAR(ddate) = YEAR(CURRENT_DATE()) AND isactivedue = '0'";
-         $result22 = mysqli_query($con, $duesquery22);
-         $row22 = mysqli_fetch_array($result22);
-         
-         $monthquery = "SELECT SUM(amount) FROM dues WHERE MONTH(ddate) = MONTH(CURRENT_DATE()) AND YEAR(ddate) = YEAR(CURRENT_DATE()) ";
-         $result1 = mysqli_query($con, $monthquery);
-         $row1 = mysqli_fetch_array($result1);
-         
-    
-
-         $subs = $row1[0] - $row22[0];
-         
-         $userid = $_SESSION['id'];
-         $doornumber = $_SESSION['doornumber'];
-         
-         $monthquery2 = "SELECT amount FROM dues WHERE flatid='$doornumber' AND MONTH(ddate) = MONTH(CURRENT_DATE()) AND YEAR(ddate) = YEAR(CURRENT_DATE())";
-         $result3 = mysqli_query($con, $monthquery2);
-         $row3 = mysqli_fetch_array($result3);
-         
-         $duesquery3 = "SELECT SUM(price) FROM expanse WHERE MONTH(date) = MONTH(CURRENT_DATE()) AND YEAR(date) = YEAR(CURRENT_DATE())";
-         $result4 = mysqli_query($con, $duesquery3);
-         $row4 = mysqli_fetch_array($result4);
-
-
-         $exquery = "SELECT * FROM announcement WHERE isactive = '1'";
-        $result21 = mysqli_query($con, $exquery);
-
-
-        
-     
-
-  ?>
-
-
-
+	$neigquery = "SELECT * FROM users ";
+  	$result = mysqli_query($con, $neigquery);
+  	
+  	
+?>
 
 
 <head>
@@ -84,7 +51,7 @@ include "../config.php";
                                 <h5 class="mt-4">HOME PAGE</h5>
                             </a>
                            
-                                  
+                                   
                                   
                                    
 								
@@ -112,87 +79,70 @@ include "../config.php";
 
             <div id="layoutSidenav_content">
                 <main>
-                    <div class="row">
-                     
-                                 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-								 
-						
-                         
-                       
-                        
-                    <div class="container-fluid">
-                        <h1 class="mt-4">Hello Admin!</h1>
-                        <div class="card mb-4">
-                            
-                        </div>
-						 <div class="container-fluid">
-                        <h1 class="mt-4">Attention!</h1>
+                	 
+                	 <div class="container-fluid">
+                        <h1 class="mt-4">Residents List</h1>
                         
                         
                         <div class="card mb-4">
-                        
                             
-                              
+                          
+                                <div class="table-responsive">
                                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                      
-                                            
-                                                <th>Date</th>
-                                                <th>Announcement</th>       
-
                                        
+                                            <tr>
+                                                <th>Door Number</th>
+                                                <th>Name</th>
+                                                <th>Surname</th>
+                                                <th>Username</th>                                               
+                                                <th>Phone Number</th>
+                                                <th>E-mail</th>
+                                                <th>Register Date</th>
+                                                <th>Quit Date</th>
+                                                <th>Is Admin</th>
+                                                <th>Is Active</th>
+                                                
+                                            </tr>
+                                      
+                                        
                                         <tbody>
-                                            <?php
-                                            while($row21 = mysqli_fetch_array($result21)){   
-                                            echo "<tr><td>" . $row21['date'] . "</td><td>" . $row21['annodetail']  . "</td></tr>";  
-                                            }
-                                            ?>
+                                        	<?php
+                                        	while($row = mysqli_fetch_array($result)){  
+
+                                            if($row['isadmin'] == '1'){
+                                                    $ispaid = "Yes";
+                                                } else {
+                                                    $ispaid = "No";
+                                                }
+                                                if($row['isactive'] == '1'){
+                                                    $ispaid1 = "Yes";
+                                                } else {
+                                                    $ispaid1 = "No";
+                                                }
+
+											echo "<tr><td>" . $row['doornumber'] . "</td><td>" . $row['firstname'] . "</td><td>" . $row['lastname'] . "</td><td>" . $row['loginname'] . "</td><td>" . $row['phonenumber'] . "</td><td>" . $row['email'] . "</td><td>" . $row['reg_date'] . "</td><td>" . $row['quit_date'] . "</td><td>". $ispaid . "</td><td>" . $ispaid1 .  "</td></tr>";  
+											}
+											?>
+                                            
+                                          
                                         </tbody>
                                     </table>
-                               
-                          
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    </div>
-					      
-                    <div class="container-fluid">
-                        <h1 class="mt-5"><?php $row33 ?></h1>
-                        <div class="card mb-5">
-                            
-                        </div>
-                    </div>
+
+
+                    
                 </main>
-             
+              
             </div>
         </div>
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="js/scripts.js"></script>
+        <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
+        <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
+        <script src="js/datatables-demo.js"></script>
     </body>
 </html>
